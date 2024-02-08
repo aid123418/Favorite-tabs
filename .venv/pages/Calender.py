@@ -38,4 +38,3 @@ for week in cal:
 day_of_week = now.strftime("%A")
 day_of_month = now.strftime("%d")
 st.write(f"\nToday is {day_of_week}, {calendar.month_name[current_month]} {day_of_month}th")
-

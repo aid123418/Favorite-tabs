@@ -4,6 +4,8 @@ import time
 
 def upload_data(tabname_local, link_local, filename=".//.venv/Tabs.txt"):
     with open(filename, 'a') as file_local:
+        if "https://" not in link_local:
+            link_local = "https://" + link_local
         file_local.write(f"{tabname_local},{link_local}\n")
 
 
@@ -21,7 +23,7 @@ st.title(f"Hello user!")
 st.info("To change the theme color, go to the 3 dots and click settings.    "
         " To delete a link, click the checkbox next to it, then click the checkbox again.")
 
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 
 tabs = read_data()
 
@@ -58,7 +60,3 @@ with st.form("New link"):
 if submit:
     upload_data(tabname, url)
     st.rerun()
-
-with col3:
-    clock = time.strftime("%b, %a %d")
-    st.subheader(f"It is {clock} right now!")
