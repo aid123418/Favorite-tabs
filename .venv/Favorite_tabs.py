@@ -3,7 +3,7 @@ import time
 import pandas
 import hashlib
 
-def upload_data(tabname_local, url_local, filename=".//.venv/Tabs.csv"):
+def upload_data(tabname_local, url_local, filename="Tabs.csv"):
     # Use SHA-256 hash of the URL as the filename
     hashed_filename = hashlib.sha256(url_local.encode()).hexdigest()
     with open(filename, 'a') as file:
@@ -15,7 +15,7 @@ st.info("To change the theme color, go to the 3 dots and click settings.")
 
 col1, col2, col3 = st.columns(3)
 
-df = pandas.read_csv(".//.venv/Tabs.csv", header=None, sep=',', names=["tabname", "url", "hashed_filename"], on_bad_lines='skip')
+df = pandas.read_csv("Tabs.csv", header=None, sep=',', names=["tabname", "url", "hashed_filename"], on_bad_lines='skip')
 with col1:
     for index, row in df[:6].iterrows():
         link = row["url"]
