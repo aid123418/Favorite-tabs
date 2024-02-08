@@ -1,30 +1,59 @@
 import streamlit as st
 import time
-import pandas
-import hashlib
 
-def upload_data(tabname_local, url_local, filename="Tabs.csv"):
-    # Use SHA-256 hash of the URL as the filename
-    hashed_filename = hashlib.sha256(url_local.encode()).hexdigest()
-    with open(filename, 'a') as file:
-        file.write(f"{tabname_local},{url_local},{hashed_filename}" + '\n')
+
+def upload_data(tabname_local, link_local, filename=".//.venv/Tabs.txt"):
+    with open(filename, 'a') as file_local:
+        file_local.write(f"{tabname_local},{link_local}\n")
+
+
+def read_data(filename=".//.venv/Tabs.txt"):
+    try:
+        with open(filename, 'r') as file_local:
+            tabs = [line.strip().split(",") for line in file_local.readlines()]
+    except FileNotFoundError:
+        tabs = []
+    return tabs
+
 
 st.title(f"Hello user!")
 
-st.info("To change the theme color, go to the 3 dots and click settings.")
+st.info("To change the theme color, go to the 3 dots and click settings.    "
+        " To delete a link, click the checkbox next to it, then click the checkbox again.")
 
 col1, col2, col3 = st.columns(3)
 
-df = pandas.read_csv("Tabs.csv", header=None, sep=',', names=["tabname", "url", "hashed_filename"], on_bad_lines='skip')
+tabs = read_data()
+
+# Maintain a list of checkboxes and their corresponding link boxes
+checkboxes = []
+
 with col1:
-    for index, row in df[:6].iterrows():
-        link = row["url"]
-        title = row["tabname"]
-        st.link_button(url=link, label=title)
-    with st.form("New link"):
-        tabname = st.text_input(label="New tab name:", help="Input the new tab's name!")
-        url = st.text_input(label="URL to site:", help="Copy and paste the full link of the tab you want to save!")
-        submit = st.form_submit_button(label="Submit")
+    for i, tab in enumerate(tabs):
+        if len(tab) >= 2:
+            # Create a checkbox for each link box
+            checkbox = st.checkbox(f"Remove {tab[0]}")
+            checkboxes.append((checkbox, i))
+            st.link_button(label=tab[0], url=tab[1], help=tab[1])
+
+# Remove the selected link box when its checkbox is checked
+for checkbox, i in checkboxes:
+    if checkbox:
+        del tabs[i]
+        break
+
+# Rewrite data file after deletion
+try:
+    with open(".//.venv/Tabs.txt", 'w') as file_local:
+        for tab in tabs:
+            file_local.write(f"{tab[0]}, {tab[1]}\n")
+except IndexError:
+    st.rerun()
+
+with st.form("New link"):
+    tabname = st.text_input(label="New tab name:", help="Input the new tab's name!")
+    url = st.text_input(label="URL to site:", help="Copy and paste the full link of the tab you want to save!")
+    submit = st.form_submit_button(label="Submit")
 
 if submit:
     upload_data(tabname, url)
