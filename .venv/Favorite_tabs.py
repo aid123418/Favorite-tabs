@@ -21,7 +21,7 @@ def read_data(filename=".//.venv/Tabs.txt"):
 st.title(f"Hello user!")
 
 st.info("To change the theme color, go to the 3 dots and click settings.    "
-        " To delete a link, click the checkbox next to it, then click the checkbox again.")
+        " To delete a link, click the checkbox next to it, then click the checkbox again. This site is made by Aiden W!")
 
 col1, col2 = st.columns(2)
 
@@ -40,7 +40,7 @@ with col1:
 
 # Remove the selected link box when its checkbox is checked
 for checkbox, i in checkboxes:
-    if checkbox:
+    if checkbox:h
         del tabs[i]
         break
 
