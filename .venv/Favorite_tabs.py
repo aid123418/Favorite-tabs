@@ -40,7 +40,7 @@ with col1:
 
 # Remove the selected link box when its checkbox is checked
 for checkbox, i in checkboxes:
-    if checkbox:h
+    if checkbox:
         del tabs[i]
         break
 
