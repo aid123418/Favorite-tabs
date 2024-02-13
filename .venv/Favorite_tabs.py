@@ -40,12 +40,9 @@ with col1:
 
 # Remove the selected link box when its checkbox is checked
 for checkbox, i in checkboxes:
-    try:
-        if checkbox:
-            del tabs[i]
-            break
-    except IndentationError:
-        print("sorry")
+    if checkbox:
+        del tabs[i]
+        break
 
 # Rewrite data file after deletion
 try:
